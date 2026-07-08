@@ -1,0 +1,12 @@
+.env
+.env.*
+*.env
+.DS_Store
+node_modules/
+.netlify/
+dist/
+build/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

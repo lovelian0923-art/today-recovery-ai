@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>오늘회복 AI | 프라이빗 회복 코치</title>
+  <meta name="description" content="오늘회복 AI - 여성의 수면, 생리 리듬, 컨디션에 맞춘 프라이빗 회복 코치" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+  <!-- Global SVG Gradients for gauges & accents -->
+  <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" aria-hidden="true">
+    <defs>
+      <linearGradient id="goldGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#D8B46A" />
+        <stop offset="50%" stop-color="#F3D99B" />
+        <stop offset="100%" stop-color="#FFF1C9" />
+      </linearGradient>
+      <linearGradient id="garnetGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#8B1C28" />
+        <stop offset="100%" stop-color="#4A0A12" />
+      </linearGradient>
+    </defs>
+  </svg>
+  <main class="app">
+    <!-- START SCREEN -->
+    <section id="start" class="screen active">
+      <div class="brand">
+        <span class="eyebrow">WOMEN'S BODY RHYTHM CARE</span>
+        <h1>오늘회복<span class="gold-text"> AI</span></h1>
+      </div>
+
+      <div class="hero" aria-hidden="true">
+        <div class="gold-bokeh"></div>
+        <div class="diamond-glow"></div>
+
+        <!-- Crystal Shimmering Particles (8-14 discrete stars) -->
+        <div class="start-particles">
+          <span class="crystal-particle diamond" style="top: 12%; left: 18%; animation-delay: 0s;"></span>
+          <span class="crystal-particle"
+            style="top: 22%; left: 78%; width: 5px; height: 5px; animation-delay: 1.4s;"></span>
+          <span class="crystal-particle diamond" style="top: 42%; left: 8%; animation-delay: 2.8s;"></span>
+          <span class="crystal-particle" style="top: 72%; left: 82%; animation-delay: 0.6s;"></span>
+          <span class="crystal-particle diamond" style="top: 82%; left: 14%; animation-delay: 3.2s;"></span>
+          <span class="crystal-particle"
+            style="top: 58%; left: 72%; width: 6px; height: 6px; animation-delay: 2.0s;"></span>
+          <span class="crystal-particle diamond" style="top: 4%; left: 58%; animation-delay: 0.9s;"></span>
+          <span class="crystal-particle"
+            style="top: 88%; left: 48%; width: 3px; height: 3px; animation-delay: 2.3s;"></span>
+          <span class="crystal-particle diamond" style="top: 30%; left: 88%; animation-delay: 1.7s;"></span>
+          <span class="crystal-particle"
+            style="top: 76%; left: 24%; width: 4px; height: 4px; animation-delay: 0.3s;"></span>
+        </div>
+
+        <div class="hero-bg-ring"></div>
+
+        <!-- Smooth Silk Gold Ribbon Curves -->
+        <svg class="wave" viewBox="0 0 420 260">
+          <path d="M 10 160 C 120 50, 190 230, 220 130 C 250 30, 320 180, 410 70" fill="none" stroke="url(#goldGrad)"
+            stroke-width="1.2" stroke-dasharray="3 3" opacity="0.45" />
+          <path d="M 10 160 C 120 50, 190 230, 220 130 C 250 30, 320 180, 410 70" fill="none" stroke="url(#garnetGrad)"
+            stroke-width="2.2" opacity="0.8" />
+        </svg>
+
+        <div class="report-stack">
+          <div class="mini-report c">
+            <span class="badge">CYCLE CARE</span>
+            <div class="bar"><i style="width:62%"></i></div>
+          </div>
+          <div class="mini-report b">
+            <span class="badge">SLEEP SCORE</span>
+            <div class="bar"><i style="width:78%"></i></div>
+          </div>
+          <div class="mini-report a">
+            <span class="badge">BODY RHYTHM</span>
+            <div class="bar"><i style="width:86%"></i></div>
+            <div class="bar"><i style="width:48%"></i></div>
+            <div class="bar"><i style="width:67%"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="intro">
+        <h2>오늘회복 AI<br><span class="gold-serif">Today Recovery AI</span></h2>
+        <p class="muted">여성의 수면, 생리 리듬, 식욕, 붓기, 피로를 바탕으로 오늘의 회복 루틴과 식단을 제안합니다.</p>
+      </div>
+
+      <div class="card" style="margin-top: 20px;">
+        <div class="field">
+          <label class="label">아이디 (이메일)</label>
+          <input id="authEmail" class="input" type="email" placeholder="example@email.com" />
+        </div>
+        <div class="field">
+          <label class="label">비밀번호</label>
+          <input id="authPassword" class="input" type="password" placeholder="비밀번호를 입력하세요" />
+        </div>
+        <div class="field" id="authNicknameField" style="display: none;">
+          <label class="label">닉네임</label>
+          <input id="authNickname" class="input" type="text" placeholder="사용할 닉네임을 입력하세요" />
+        </div>
+        <p id="authMessage" class="notice" style="color: #8B1C28; min-height: 20px;"></p>
+        <div id="loginUi" style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+          <button class="btn btn-primary" onclick="handleLogin()">로그인</button>
+          <button class="btn btn-secondary" onclick="toggleAuthMode('signup')">회원가입으로 이동</button>
+        </div>
+        <div id="signupUi" style="display: none; flex-direction: column; gap: 10px; margin-top: 20px;">
+          <button class="btn btn-primary" onclick="handleSignup()">회원가입</button>
+          <button class="btn btn-secondary" onclick="toggleAuthMode('login')">이미 계정이 있나요? 로그인</button>
+        </div>
+      </div>
+
+      <div class="action-zone">
+        <button class="btn btn-secondary" style="background: transparent; border: none; text-decoration: underline;"
+          onclick="skipAuth()">다음에 하기 (기기 보관)</button>
+        <p class="notice" style="margin-top: 10px;">의료 진단이 아닌 생활 루틴 추천 서비스입니다.</p>
+      </div>
+    </section>
+
+    <!-- PROFILE SCREEN -->
+    <section id="profile" class="screen">
+      <div class="topbar">
+        <button class="icon-btn" onclick="show('start')">←</button>
+        <h2>나의 바디 리듬 기준</h2>
+        <button class="logout-btn-outline global-logout-btn" style="display:none;" onclick="handleLogout()">로그아웃</button>
+      </div>
+      <div class="section-intro">
+        <h2>나의 기본 리듬을<br><span class="gold-serif">먼저 설정합니다.</span></h2>
+        <p class="muted">수면, 생리 주기, 몸 상태를 더 정확히 읽기 위한 기본 정보입니다.</p>
+      </div>
+      <div class="card">
+        <div class="field">
+          <label class="label">닉네임</label>
+          <input id="nickname" class="input" placeholder="이름 또는 닉네임을 입력하세요" />
+        </div>
+        <div class="grid2">
+          <div class="field">
+            <label class="label">신장 (cm)</label>
+            <input id="height" class="input" type="number" placeholder="예: 166" />
+          </div>
+          <div class="field">
+            <label class="label">체중 (kg)</label>
+            <input id="weight" class="input" type="number" placeholder="예: 54" />
+          </div>
+        </div>
+        
+        <div class="field" style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+          <label class="label">생리 리듬 기준</label>
+          <p class="muted" style="margin-bottom: 12px;">생리 중이 아니어도 마지막 시작일을 입력하면 현재 리듬 단계를 더 정확히 추정할 수 있어요.</p>
+          <div class="grid2">
+            <div class="field" style="margin-bottom: 10px;">
+              <label class="label" style="font-size: 12px;">마지막 생리 시작일</label>
+              <div class="date-input-wrap">
+                <input id="periodStart" class="input date-input" type="date" />
+                <button type="button" class="date-picker-btn" onclick="openPeriodDatePicker()">날짜 선택</button>
+              </div>
+            </div>
+            <div class="field" style="margin-bottom: 10px;">
+              <label class="label" style="font-size: 12px;">평균 생리주기 (일)</label>
+              <input id="periodCycle" class="input" type="number" placeholder="예: 28" min="20" max="45" value="28" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" style="font-size: 12px;">평균 생리 기간 (일)</label>
+            <input id="periodDays" class="input" type="number" placeholder="예: 5" min="2" max="10" value="5" />
+          </div>
+        </div>
+
+        <!-- 
+          [향후 웹 푸시 알림 확장 설계 메모]
+          - manifest.json 추가 (PWA 기본 요건)
+          - service-worker.js 등록 (백그라운드 푸시 수신용)
+          - PushManager.subscribe() 호출을 통해 Push Subscription(엔드포인트, 키 등) 생성
+          - 생성된 subscription 정보를 Supabase push_subscriptions 테이블에 저장
+          - Netlify Scheduled Function (또는 별도 cron)가 1분마다 실행되며,
+            profiles의 notification_time과 현재 시간이 일치하는 사용자를 조회
+          - 해당 사용자의 subscription 정보를 VAPID key와 함께 web-push 라이브러리를 통해 실제 푸시 발송
+          - (현재는 전화번호를 수집하지 않으므로 SMS/알림톡 대신 브라우저 푸시로 처리)
+        -->
+        <div class="field" style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+          <label class="label">알림 설정</label>
+          <p class="muted" style="margin-bottom: 12px;">휴대폰 번호 없이도 브라우저 알림 권한을 허용하면 루틴 리포트 알림을 받을 수 있어요. 단, 기기와 브라우저 설정에 따라 동작 방식이 다를 수 있습니다.</p>
+          
+          <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; cursor: pointer;">
+            <input type="checkbox" id="notificationEnabled" onchange="handleNotificationChange(this)" style="width: 18px; height: 18px;" />
+            <span style="color: var(--white); font-size: 14px;">하루 1번 루틴 리포트 알림 받기</span>
+          </label>
+          
+          <div id="notificationTimeWrap" style="display: none; align-items: center; gap: 10px;">
+            <span class="muted" style="font-size: 14px;">시간 선택:</span>
+            <input type="time" id="notificationTime" class="input" value="09:00" style="width: auto; flex: none;" />
+          </div>
+
+          <p class="notice" style="margin-top: 12px; font-size: 11px;">iPhone에서는 홈 화면에 추가한 뒤 알림을 허용하면 더 안정적으로 사용할 수 있어요.</p>
+        </div>
+      <button class="btn btn-primary" onclick="saveProfile()">리듬 기준 저장하기</button>
+
+      <section class="logout-section" id="logoutSection" style="display: none;">
+        <p class="logout-caption">현재 계정에서 로그아웃합니다. 이 기기에 저장된 임시 기록은 유지됩니다.</p>
+        <button id="logoutBtn" class="logout-button" onclick="handleLogout()">로그아웃</button>
+      </section>
+    </section>
+
+    <!-- CHECKIN SCREEN -->
+    <section id="checkin" class="screen">
+      <div class="topbar">
+        <button class="icon-btn" onclick="show('profile')">←</button>
+        <h2>오늘 체크인</h2>
+        <span class="global-logout-btn" style="display:none; cursor:pointer; font-size:12px; color:var(--muted); text-decoration:underline;" onclick="handleLogout()">로그아웃</span>
+      </div>
+      <div class="section-intro" style="position: relative;">
+        <h2>오늘 몸의 신호를<br><span class="gold-serif">가볍게 체크해요.</span></h2>
+        <p class="muted">선택한 항목을 바탕으로 오늘의 회복 방향을 정리합니다.</p>
+        <button class="btn btn-secondary"
+          style="margin-top: 12px; padding: 6px 14px; font-size: 12px; min-height: 32px; width: auto; display: inline-flex; align-items: center; justify-content: center;"
+          onclick="show('profile')">나의 정보 수정</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">오늘의 관리 목적</div>
+        <div class="goal-list" id="goalCards"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">수면 리듬</div>
+        <div class="field">
+          <label class="label">어젯밤 수면 시간</label>
+          <div class="chips" id="sleepChips"></div>
+        </div>
+        <div class="field">
+          <label class="label">수면의 질</label>
+          <div class="chips" id="sleepQualityChips"></div>
+        </div>
+        <div class="field">
+          <label class="label">기상 후 체감 컨디션</label>
+          <div class="chips" id="wakeChips"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">생리 리듬</div>
+        <div class="field">
+          <label class="label">현재 생리 진행 여부</label>
+          <div class="chips" id="onPeriodChips"></div>
+        </div>
+        <div class="field">
+          <label class="label">동반 증상 (중복 선택)</label>
+          <div class="chips" id="periodSymptomChips"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">오늘 컨디션</div>
+        <div class="field">
+          <label class="label">전체 컨디션</label>
+          <div class="chips" id="conditionChips"></div>
+        </div>
+        <div class="field">
+          <label class="label">피로 지수</label>
+          <div class="chips" id="fatigueChips"></div>
+        </div>
+        <div class="field">
+          <label class="label">붓기</label>
+          <div class="chips" id="bloatingChips"></div>
+        </div>
+        <div class="field">
+          <label class="label">위장 소화 상태</label>
+          <div class="chips" id="digestionChips"></div>
+        </div>
+        <div class="field">
+          <label class="label">식욕 상태</label>
+          <div class="chips" id="appetiteChips"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">전날 패턴</div>
+        <div class="field">
+          <label class="label">과식 여부</label>
+          <div class="chips" id="overeatingChips"></div>
+        </div>
+        <div class="field">
+          <label class="label">음주 여부</label>
+          <div class="chips" id="alcoholChips"></div>
+        </div>
+        <div class="field">
+          <label class="label">야식 여부</label>
+          <div class="chips" id="lateSnackChips"></div>
+        </div>
+        <div class="field">
+          <label class="label">수면 부족 영향</label>
+          <div class="chips" id="ySleepChips"></div>
+        </div>
+        <div class="field">
+          <label class="label">오늘 운동 가능 여부</label>
+          <div class="chips" id="workoutAvailableChips"></div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="createReport()">오늘 회복 리포트 보기</button>
+    </section>
+
+    <!-- REPORT SCREEN -->
+    <section id="report" class="screen">
+      <div class="topbar">
+        <button class="icon-btn" onclick="show('checkin')">←</button>
+        <h2>회복 리포트</h2>
+        <button class="logout-btn-outline global-logout-btn" style="display:none;" onclick="handleLogout()">로그아웃</button>
+      </div>
+      <div id="reportContent"></div>
+    </section>
+
+    <!-- RECORDS SCREEN -->
+    <section id="records" class="screen">
+      <div class="topbar">
+        <button class="icon-btn" onclick="show('checkin')">←</button>
+        <h2>나의 리포트 기록</h2>
+        <button class="logout-btn-outline global-logout-btn" style="display:none;" onclick="handleLogout()">로그아웃</button>
+      </div>
+      <div id="recordsContent"></div>
+    </section>
+
+    <!-- WEEKLY SCREEN -->
+    <section id="weekly" class="screen">
+      <div class="topbar">
+        <button class="icon-btn" onclick="show('checkin')">←</button>
+        <h2>주간 회복 리듬</h2>
+        <button class="logout-btn-outline global-logout-btn" style="display:none;" onclick="handleLogout()">로그아웃</button>
+      </div>
+      <div id="weeklyContent"></div>
+    </section>
+
+    <!-- MONTHLY SCREEN -->
+    <section id="monthly" class="screen">
+      <div class="topbar">
+        <button class="icon-btn" onclick="show('checkin')">←</button>
+        <h2>월간 회복 리듬</h2>
+        <button class="logout-btn-outline global-logout-btn" style="display:none;" onclick="handleLogout()">로그아웃</button>
+      </div>
+      <div id="monthlyContent"></div>
+    </section>
+
+    <!-- NAVIGATION TABS -->
+    <nav class="tabs" id="tabs">
+      <button class="tab active" onclick="tabShow('checkin')">
+        <span class="tab-icon">✦</span>
+        <span>오늘</span>
+      </button>
+      <button class="tab" onclick="tabShow('report')">
+        <span class="tab-icon">❖</span>
+        <span>리포트</span>
+      </button>
+      <button class="tab" onclick="tabShow('records')">
+        <span class="tab-icon">≡</span>
+        <span>기록</span>
+      </button>
+      <button class="tab" onclick="tabShow('weekly')">
+        <span class="tab-icon">▥</span>
+        <span>주간</span>
+      </button>
+      <button class="tab" onclick="tabShow('monthly')">
+        <span class="tab-icon">◌</span>
+        <span>월간</span>
+      </button>
+    </nav>
+  </main>
+
+  <!-- APP_VERSION: stability-hotfix-v20260708-2100 -->
+  <!-- TODO: Implement Push API notification service for daily check-in reminders (requires Service Worker) -->
+  <script>
+    const APP_VERSION = 'stability-hotfix-v20260708-2100';
+    console.log('[Today Recovery AI] version:', APP_VERSION);
+
+    const $ = id => document.getElementById(id);
+    const storageKey = 'todayRecoveryAI_v3';
+
+    let supabaseClient = null;
+
+    async function initAuthAndStart() {
+      try {
+        const res = await fetch('/.netlify/functions/get_auth_config');
+        if (res.ok) {
+          const config = await res.json();
+          if (window.supabase && config.supabaseUrl && config.supabasePublishableKey) {
+            supabaseClient = window.supabase.createClient(config.supabaseUrl, config.supabasePublishableKey);
+          } else {
+            console.warn('Supabase JS loaded or config valid but init failed.');
+          }
+        } else {
+          console.warn('Auth config API error:', res.status);
+        }
+      } catch (err) {
+        console.warn('Auth config fetch failed, continuing without login feature', err);
+        alert('현재 서버 연결 문제로 로그인 기능을 사용할 수 없어 로컬 모드로 진행합니다.');
+      }
+      
+      // 클라이언트 초기화 후 시작 로직 실행
+      startApp();
+    }
+
+    const options = {
+      sleep: [['under4', '4시간 이하'], ['5-6', '5~6시간'], ['7-8', '7~8시간'], ['over9', '9시간 이상']],
+      sleepQuality: [['deep', '깊게 잠'], ['normal', '보통'], ['woke_often', '자주 깸'], ['restless', '뒤척임'], ['hard_to_sleep', '잠들기 어려움'], ['vivid_dreams', '꿈이 많음'], ['insufficient', '부족함']],
+      wake: [['refreshed', '개운함'], ['heavy_body', '몸이 무거움'], ['bloated', '얼굴/몸이 부음'], ['digestion_discomfort', '속이 불편함'], ['foggy', '두통/멍함'], ['period_discomfort', '생리통/하복부 불편감'], ['strong_appetite', '식욕이 강함'], ['sensitive_mood', '기분이 예민함'], ['low_energy', '에너지가 낮음']],
+      onPeriod: [['yes', '생리 중'], ['no', '생리 아님'], ['irregular', '주기 불규칙'], ['none', '해당 없음']],
+      periodSymptoms: [['cramp', '생리통'], ['bloat', '하복부 붓기'], ['appetite', '식욕 증가'], ['sweet', '단 당김'], ['fatigue', '피로 무기력'], ['mood', '감정 기복'], ['sleep', '수면 장애'], ['none', '증상 없음']],
+      condition: [['good', '최상'], ['normal', '보통'], ['heavy', '무거움'], ['exhausted', '극도 피로']],
+      fatigue: [['low', '낮음'], ['normal', '보통'], ['high', '높음'], ['extreme', '매우 높음']],
+      bloating: [['none', '없음'], ['mild', '경미함'], ['severe', '심함']],
+      digestion: [['good', '편안함'], ['bloat', '더부룩함'], ['burn', '속쓰림'], ['constip', '답답함'], ['nausea', '메스꺼움']],
+      appetite: [['normal', '보통'], ['low', '저하'], ['high', '강함'], ['sweet', '단 음식 갈망'], ['salty', '자극적 음식 갈망']],
+      overeating: [['none', '없음'], ['mild', '약간 과식'], ['heavy', '과식'], ['binge', '폭식 수준']],
+      alcohol: [['none', '없음'], ['light', '가볍게'], ['moderate', '적당히'], ['heavy', '과음']],
+      lateSnack: [['none', '없음'], ['light', '가벼운 간식'], ['greasy', '고지방/기름진 야식'], ['sweet', '디저트/단 야식']],
+      ySleep: [['none', '없음'], ['mild', '약간 부족'], ['heavy', '심각한 부족']],
+      workoutAvailable: [['none', '불가능'], ['walk', '가벼운 산책'], ['low', '저강도'], ['medium', '중강도'], ['high', '고강도']]
+    };
+
+    const goalOptions = [
+      ['condition', '컨디션 유지', '오늘 몸 상태를 안정적으로 유지합니다.', '✦'],
+      ['diet', '체중 조절', '무리한 절식 없이 오늘 컨디션에 맞춰 체중 조절 방향을 잡습니다.', '◇'],
+      ['food', '오늘 식단 조정', '오늘 컨디션에 맞는 식사 방향을 정합니다.', '⚜'],
+      ['movement', '운동 강도 조정', '수면과 피로에 맞춰 운동 강도를 조절합니다.', '◈'],
+      ['overeat', '과식 후 회복', '붓기와 위장 부담을 낮춥니다.', '❖'],
+      ['alcohol', '음주 후 회복', '수분과 휴식을 우선으로 잡습니다.', '💧'],
+      ['sleep', '수면 부족 회복', '에너지 흔들림을 안정시킵니다.', '🌙'],
+      ['pms', '생리 전 관리', '식욕과 붓기 변화를 부드럽게 조절합니다.', '🌹'],
+      ['period', '생리 중 회복', '따뜻한 식사와 저강도 활동을 우선합니다.', '☕'],
+      ['fatigue', '피로 회복', '몸의 부담을 낮추고 회복을 우선합니다.', '✵'],
+      ['digestion', '소화 회복', '속을 편안하게 만드는 루틴을 잡습니다.', '🥣']
+    ];
+
+    function store() {
+      const data = localStorage.getItem(storageKey);
+      return data ? JSON.parse(data) : { profile: null, checkins: [], lastReport: null, recentMealTitles: [] };
+    }
+    function saveStore(s) {
+      localStorage.setItem(storageKey, JSON.stringify(s));
+    }
+
+    function getUserUuid() {
+      let uuid = localStorage.getItem('todayRecovery_user_uuid');
+      if (!uuid) {
+        if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+          uuid = crypto.randomUUID();
+        } else {
+          uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+          });
+        }
+        localStorage.setItem('todayRecovery_user_uuid', uuid);
+      }
+      return uuid;
+    }
+
+    // Auth 유틸리티 함수
+    async function getAuthToken() {
+      if (!supabaseClient) return null;
+      const { data } = await supabaseClient.auth.getSession();
+      return data?.session?.access_token || null;
+    }
+
+    function updateLogoutBtnVisibility(hasSession) {
+      const section = $('logoutSection');
+      if (section) section.style.display = hasSession ? 'block' : 'none';
+      document.querySelectorAll('.global-logout-btn').forEach(btn => {
+        btn.style.display = hasSession ? 'inline-block' : 'none';
+      });
+    }
+
+    function show(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      $(id).classList.add('active');
+      $('tabs').classList.toggle('show', !['start', 'profile'].includes(id));
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      const map = { checkin: 0, report: 1, records: 2, weekly: 3, monthly: 4 };
+      if (map[id] !== undefined) document.querySelectorAll('.tab')[map[id]].classList.add('active');
+      if (id === 'records') renderRecords();
+      if (id === 'weekly') renderPeriodReport(7);
+      if (id === 'monthly') renderPeriodReport(30);
+      window.scrollTo(0, 0);
+    }
+    function tabShow(id) { show(id) }
+
+    function makeChips(target, name, arr, def, multi = false) {
+      $(target).innerHTML = arr.map(([v, l]) => `<label class="chip"><input type="${multi ? 'checkbox' : 'radio'}" name="${name}" value="${v}" ${Array.isArray(def) ? def.includes(v) ? 'checked' : '' : v === def ? 'checked' : ''}><span>${l}</span></label>`).join('');
+    }
+
+    function renderRhythmChips(name, values, max = 4) {
+      if (!values || (Array.isArray(values) && values.length === 0)) return '<span class="rhythm-chip rhythm-chip-muted">기록 없음</span>';
+      
+      const map = {
+        '얼굴/몸이 부음': '붓기',
+        '생리통/하복부 불편감': '생리통',
+        '두통/멍함': '멍함',
+        '식욕이 강함': '식욕↑',
+        '에너지가 낮음': '에너지↓',
+        '잠들기 어려움': '입면 어려움',
+        '자주 깸': '자주 깸',
+        '꿈이 많음': '꿈 많음',
+        '개운함/가벼움': '개운함',
+        '피로가 남음': '피로 남음',
+        '몸이 무거움': '몸 무거움'
+      };
+
+      const arr = Array.isArray(values) ? values : [values];
+      const sliced = arr.slice(0, max);
+      const extra = arr.length - max;
+      
+      let html = sliced.map(v => {
+        let l = (options[name] || []).find(x => x[0] === v)?.[1] || v;
+        l = map[l] || l;
+        return `<span class="rhythm-chip">${l}</span>`;
+      }).join('');
+      
+      if (extra > 0) {
+        html += `<span class="rhythm-chip rhythm-chip-more">+${extra}</span>`;
+      }
+      return `<div class="rhythm-chip-wrap">${html}</div>`;
+    }
+
+    function init() {
+
+      makeChips('sleepChips', 'sleep', options.sleep, '7-8');
+      makeChips('sleepQualityChips', 'sleepQuality', options.sleepQuality, ['normal'], true);
+      makeChips('wakeChips', 'wake', options.wake, ['heavy_body'], true);
+      makeChips('onPeriodChips', 'onPeriod', options.onPeriod, 'no');
+      makeChips('periodSymptomChips', 'periodSymptoms', options.periodSymptoms, ['none'], true);
+      makeChips('conditionChips', 'condition', options.condition, 'normal');
+      makeChips('fatigueChips', 'fatigue', options.fatigue, 'normal');
+      makeChips('bloatingChips', 'bloating', options.bloating, 'none');
+      makeChips('digestionChips', 'digestion', options.digestion, 'good');
+      makeChips('appetiteChips', 'appetite', options.appetite, 'normal');
+      makeChips('overeatingChips', 'overeating', options.overeating, 'none');
+      makeChips('alcoholChips', 'alcohol', options.alcohol, 'none');
+      makeChips('lateSnackChips', 'lateSnack', options.lateSnack, 'none');
+      makeChips('ySleepChips', 'ySleep', options.ySleep, 'none');
+      makeChips('workoutAvailableChips', 'workoutAvailable', options.workoutAvailable, 'walk');
+
+      $('goalCards').innerHTML = goalOptions.map(([v, n, d, i]) => `
+    <label class="goal-card">
+      <input type="checkbox" name="goals" value="${v}" ${['diet', 'food'].includes(v) ? 'checked' : ''}>
+      <div class="goal-box">
+        <span class="goal-icon">${i}</span>
+        <div>
+          <div class="goal-name">${n}</div>
+          <div class="goal-desc">${d}</div>
+        </div>
+      </div>
+    </label>
+  `).join('');
+      loadProfile();
+    }
+
+    function checked(name) { return document.querySelector(`input[name="${name}"]:checked`)?.value || '' }
+    function checkedAll(name) { return [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(x => x.value) }
+    function label(name, value) {
+      if (Array.isArray(value)) return value.map(v => (options[name] || []).find(x => x[0] === v)?.[1] || v).join(', ');
+      return (options[name] || []).find(x => x[0] === value)?.[1] || value;
+    }
+    function showAuthMessage(msg, isError = true) {
+      const el = $('authMessage');
+      if (!el) return;
+      el.textContent = msg;
+      el.style.color = isError ? '#8B1C28' : '#D8B46A';
+    }
+
+    async function handleLogin() {
+      const email = $('authEmail').value.trim();
+      const password = $('authPassword').value;
+      if (!email || !password) return showAuthMessage('이메일과 비밀번호를 입력해주세요.');
+      if (!supabaseClient) return showAuthMessage('Supabase 퍼블릭 키가 설정되지 않았습니다.');
+
+      showAuthMessage('로그인 중...', false);
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      if (error) {
+        showAuthMessage(error.message);
+      } else {
+        showAuthMessage('로그인 성공!', false);
+        updateLogoutBtnVisibility(true);
+        const s = store();
+        if (s.profile) show('checkin');
+        else show('profile');
+      }
+    }
+
+    function toggleAuthMode(mode) {
+      if (mode === 'signup') {
+        $('loginUi').style.display = 'none';
+        $('signupUi').style.display = 'flex';
+        $('authNicknameField').style.display = 'block';
+        showAuthMessage('');
+      } else {
+        $('loginUi').style.display = 'flex';
+        $('signupUi').style.display = 'none';
+        $('authNicknameField').style.display = 'none';
+        showAuthMessage('');
+      }
+    }
+
+    async function handleSignup() {
+      const email = $('authEmail').value.trim();
+      const password = $('authPassword').value;
+      const nickname = $('authNickname').value.trim();
+      if (!email || !password || !nickname) return showAuthMessage('모든 항목을 입력해주세요.');
+      if (!supabaseClient) return showAuthMessage('Supabase 퍼블릭 키가 설정되지 않았습니다.');
+
+      showAuthMessage('가입 처리 중...', false);
+      const { data, error } = await supabaseClient.auth.signUp({ email, password });
+      if (error) {
+        showAuthMessage(error.message);
+      } else {
+        if (data?.user && data?.session) {
+          localStorage.setItem('pendingProfileNickname', nickname);
+          showAuthMessage('회원가입 완료! 환영합니다.', false);
+          updateLogoutBtnVisibility(true);
+          const s = store();
+          if (s.profile) show('checkin');
+          else show('profile');
+        } else {
+          showAuthMessage('가입 접수 완료! 이메일 확인이 설정되어 있다면 인증 메일을 확인해 주세요.', false);
+        }
+      }
+    }
+
+    async function handleLogout() {
+      try {
+        if (supabaseClient) {
+          const { error } = await supabaseClient.auth.signOut();
+          if (error) throw error;
+        }
+        updateLogoutBtnVisibility(false);
+        localStorage.removeItem('todayRecovery_skipped_auth');
+        alert('로그아웃되었습니다.');
+        show('start');
+      } catch (err) {
+        alert('로그아웃 중 문제가 발생했어요. 잠시 후 다시 시도해 주세요.');
+        console.error(err);
+      }
+    }
+
+    function skipAuth() {
+      localStorage.setItem('todayRecovery_skipped_auth', 'true');
+      const s = store();
+      if (s.profile) show('checkin');
+      else show('profile');
+    }
+
+    async function startApp() {
+      if (supabaseClient) {
+        const { data } = await supabaseClient.auth.getSession();
+        const hasSession = !!data?.session;
+        updateLogoutBtnVisibility(hasSession);
+
+        if (!hasSession && !localStorage.getItem('todayRecovery_skipped_auth')) {
+          show('start');
+          return;
+        }
+      }
+      const s = store();
+      if (s.profile) {
+        show('checkin');
+      } else {
+        show('profile');
+      }
+    }
+
+    function loadProfile() {
+      const p = store().profile || {};
+      const pendingNickname = localStorage.getItem('pendingProfileNickname');
+      $('nickname').value = pendingNickname || p.nickname || '';
+      if (pendingNickname) localStorage.removeItem('pendingProfileNickname');
+      
+      $('height').value = (p.height !== null && p.height !== undefined) ? p.height : '';
+      $('weight').value = (p.weight !== null && p.weight !== undefined) ? p.weight : '';
+      $('periodStart').value = p.periodStart || '';
+      $('periodCycle').value = (p.periodCycle !== null && p.periodCycle !== undefined) ? p.periodCycle : '';
+      $('periodDays').value = (p.periodDays !== null && p.periodDays !== undefined) ? p.periodDays : '';
+      if (p.notification_enabled) {
+        $('notificationEnabled').checked = true;
+        $('notificationTimeWrap').style.display = 'flex';
+      } else {
+        $('notificationEnabled').checked = false;
+        $('notificationTimeWrap').style.display = 'none';
+      }
+      $('notificationTime').value = p.notification_time || '09:00';
+    }
+
+    function handleNotificationChange(checkbox) {
+      if (checkbox.checked) {
+        $('notificationTimeWrap').style.display = 'flex';
+        if ('Notification' in window) {
+          Notification.requestPermission().then(permission => {
+            if (permission === 'denied') {
+              alert('브라우저 알림 권한이 꺼져 있어요. 설정에서 허용해 주세요.');
+              checkbox.checked = false;
+              $('notificationTimeWrap').style.display = 'none';
+            }
+          });
+        } else {
+          alert('이 브라우저에서는 알림을 지원하지 않아요.');
+          checkbox.checked = false;
+          $('notificationTimeWrap').style.display = 'none';
+        }
+      } else {
+        $('notificationTimeWrap').style.display = 'none';
+      }
+    }
+
+    async function saveProfile() {
+      const s = store();
+      const h = $('height').value.trim();
+      const w = $('weight').value.trim();
+      const cycle = $('periodCycle').value.trim();
+      const days = $('periodDays').value.trim();
+      s.profile = {
+        nickname: $('nickname').value.trim() || '회원님',
+        height: h ? +h : null,
+        weight: w ? +w : null,
+        periodStart: $('periodStart').value || '',
+        periodCycle: cycle ? +cycle : null,
+        periodDays: days ? +days : null,
+        notification_enabled: $('notificationEnabled').checked,
+        notification_time: $('notificationTime').value || '09:00'
+      };
+      saveStore(s);
+
+      // 백그라운드 비동기 Supabase 프로필 저장 (Phase 2)
+      const user_uuid = getUserUuid();
+      const token = await getAuthToken();
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
+      fetch('/.netlify/functions/save_profile', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ user_uuid, profile: s.profile })
+      }).catch(err => {
+        console.warn('Supabase profile sync failed (offline fallback active):', err);
+      });
+
+      show('checkin');
+    }
+
+    function openPeriodDatePicker() {
+      const input = document.getElementById('periodStart');
+      if (!input) return;
+      if (typeof input.showPicker === 'function') {
+        input.showPicker();
+      } else {
+        input.focus();
+        input.click();
+      }
+    }
+
+    function sleepScore(v, q, w) {
+      let n = { under4: 35, '5-6': 62, '7-8': 85, over9: 78 }[v] || 60;
+      const qArr = Array.isArray(q) ? q : [q];
+      if (qArr.some(x => ['woke_often', 'restless', 'hard_to_sleep', 'insufficient'].includes(x))) n -= 14;
+      const wakeArr = Array.isArray(w) ? w : [w];
+      if (wakeArr.some(x => ['foggy', 'low_energy', 'heavy_body'].includes(x))) n -= 10;
+      return Math.max(25, Math.min(95, n));
+    }
+    function bmi(h, w) { return h && w ? (w / ((h / 100) ** 2)).toFixed(1) : '-' }
+    function bmiStatus(x) { x = +x; return x < 18.5 ? '저체중' : x < 23 ? '정상' : x < 25 ? '과체중' : '비만' }
+    function calculatePeriodPhase(p) {
+      if (!p.periodStart) return { phase: '미등록', cycleDay: null, d: null, date: null };
+      const start = new Date(p.periodStart);
+      const cycle = p.periodCycle || 28;
+      const periodDays = p.periodDays || 5;
+      const today = new Date();
+      
+      let next = new Date(start);
+      let prev = new Date(start);
+      
+      while (next < today) {
+        prev = new Date(next);
+        next.setDate(next.getDate() + cycle);
+      }
+      
+      const diffNext = Math.ceil((next - today) / 86400000);
+      const diffPrev = Math.floor((today - prev) / 86400000) + 1;
+      
+      let phase = '미등록';
+      const ovulationDay = cycle - 14;
+      if (diffPrev <= periodDays) {
+        phase = '월경기';
+      } else if (diffPrev <= ovulationDay - 2) {
+        phase = '난포기';
+      } else if (diffPrev >= ovulationDay - 1 && diffPrev <= ovulationDay + 1) {
+        phase = '배란기';
+      } else {
+        phase = '황체기';
+      }
+      
+      return { phase, cycleDay: diffPrev, d: diffNext, date: next.toISOString().slice(0, 10) };
+    }
+
+    function renderPeriodChips(values) {
+      if (!values) return '<span class="period-chip period-chip-muted">기록 없음</span>';
+      const arr = Array.isArray(values) ? values : [values];
+      const valid = arr.filter(x => x && x !== 'none');
+      if (valid.length === 0) return '<span class="period-chip period-chip-muted">증상 없음</span>';
+      
+      const mapping = {
+        'bloat': '복부 붓기',
+        'appetite': '식욕↑',
+        'sweet': '단맛 당김',
+        'fatigue': '피로',
+        'mood': '감정 기복',
+        'sleep': '수면 불편',
+        'cramp': '생리통'
+      };
+      
+      const max = 4;
+      const display = valid.slice(0, max);
+      const extra = valid.length - max;
+      
+      let html = display.map(v => {
+        let text = mapping[v] || label('periodSymptoms', v) || v;
+        return `<span class="period-chip">[${text}]</span>`;
+      }).join('');
+      
+      if (extra > 0) {
+        html += `<span class="period-chip period-chip-more">[+${extra}]</span>`;
+      }
+      return html;
+    }
+
+    function generatePeriodSummary(d, phaseInfo) {
+      const isPeriod = d.onPeriod === 'yes';
+      const arr = Array.isArray(d.periodSymptoms) ? d.periodSymptoms : [d.periodSymptoms];
+      const hasSymptoms = arr.some(x => x && x !== 'none');
+      
+      if (phaseInfo.phase === '미등록' && !isPeriod) return "프로필에 생리 시작일을 등록하면 더 정확한 리듬 예측이 제공됩니다.";
+      
+      if (isPeriod) {
+        if (hasSymptoms) return "오늘은 생리 리듬 영향이 있어 무리한 운동보다 회복 중심이 좋아요.";
+        return "생리 중이지만 특별한 불편 증상 없이 비교적 안정적인 상태입니다.";
+      }
+      
+      if (phaseInfo.phase === '황체기') return "주기상 황체기 구간에 가까워 식욕과 붓기 신호가 커질 수 있어요.";
+      if (phaseInfo.phase === '배란기') return "배란기 구간입니다. 컨디션 변화에 유의하며 무리하지 마세요.";
+      if (phaseInfo.phase === '난포기') return "난포기 구간입니다. 비교적 안정적인 리듬으로 활동하기 좋은 시기예요.";
+      if (phaseInfo.phase === '월경기') return "월경기 구간입니다. 몸을 따뜻하게 유지하고 가벼운 스트레칭으로 순환을 도와주세요.";
+      
+      return "오늘의 생리 리듬을 기반으로 컨디션을 조절해 보세요.";
+    }
+
+    const presets = {
+      diet: {
+        type: '체중 조절 리듬일',
+        badges: ['BALANCE', 'RECOVERY', 'LIGHT'],
+        prior: [
+          ['단백질 구성을 통한 식욕 안정', '매 끼니 단백질을 챙겨 식욕 변동 폭을 안정시킵니다.'],
+          ['균형 있는 식사 리듬 유지', '절식 대신 대사를 떨어뜨리지 않는 식단을 유지합니다.'],
+          ['컨디션 맞춤 운동 조율', '당일 컨디션에 맞춰 부담 없는 운동을 진행합니다.']
+        ],
+        foods: [
+          {
+            img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&auto=format&fit=crop&q=80',
+            title: '단백질 샐러드볼',
+            desc: '단백질과 지방을 함께 채워 식욕 흔들림을 줄입니다.',
+            tags: ['단백질 섭취', '식욕 안정']
+          },
+          {
+            img: 'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?w=600&auto=format&fit=crop&q=80',
+            title: '두부 곡물밥',
+            desc: '복합 탄수화물과 단백질로 포만감을 안정적으로 유지합니다.',
+            tags: ['혈당 조절', '편안한 식사']
+          }
+        ],
+        move: ['NORMAL', '평소 루틴 유지', '컨디션이 양호하므로 평소 근력 및 순환 루틴을 진행하세요.'],
+        avoid: ['극단적인 절식', '단백질 섭취 부족', '공복 고강도 운동', '심야 야식'],
+        coach: '오늘은 무리하게 줄이기보다, 몸의 아름다운 리듬을 조용히 지켜내는 날입니다.'
+      },
+      overeat: {
+        type: '과식 후 붓기 회복일',
+        badges: ['BLOAT', 'RESET', 'LOW SALT'],
+        prior: [
+          ['미온수를 통한 붓기 완화', '미온수를 편안하게 마셔 잔류 붓기를 부드럽게 배출합니다.'],
+          ['속 편한 저자극 식사', '부드럽게 소화되는 가벼운 식단으로 위장에 휴식을 줍니다.'],
+          ['림프 순환을 위한 산책', '강박적인 운동 대신 림프 순환을 돕는 산책을 추천합니다.']
+        ],
+        foods: [
+          {
+            img: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=600&auto=format&fit=crop&q=80',
+            title: '순두부 회복볼',
+            desc: '부드러운 단백질로 속 부담을 줄이고 붓기 회복을 돕습니다.',
+            tags: ['저자극', '붓기 케어']
+          },
+          {
+            img: 'https://images.unsplash.com/photo-1505576399279-565b52d4ac71?w=600&auto=format&fit=crop&q=80',
+            title: '계란 채소 미음',
+            desc: '위장에 부담을 주지 않고 수분과 소화를 가볍게 돕습니다.',
+            tags: ['위장 보호', '가벼운 리셋']
+          }
+        ],
+        move: ['LOW', '가벼운 산책', '고강도 운동보다 가벼운 스트레칭과 산책을 진행하세요.'],
+        avoid: ['무작정 굶기', '과도한 보상 운동', '추가 나트륨 섭취', '고당질 디저트'],
+        coach: '어제 섭취량이 늘었더라도 굶지 마세요. 가벼운 순환으로 제자리를 찾아줍니다.'
+      },
+      alcohol: {
+        type: '음주 후 피로 회복일',
+        badges: ['HYDRATION', 'REST', 'STABLE'],
+        prior: [
+          ['전해질 및 수분 보충', '체액 밸런스를 되찾기 위해 수분과 전해질을 자주 챙깁니다.'],
+          ['속 부담 완화 영양 섭취', '자극적인 해장 대신 속을 편안하게 달래는 식사를 선택합니다.'],
+          ['고강도 운동 조절', '몸이 회복에 집중할 수 있도록 무리한 운동은 쉬어갑니다.']
+        ],
+        foods: [
+          {
+            img: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=600&auto=format&fit=crop&q=80',
+            title: '바나나 요거트볼',
+            desc: '수분과 칼륨을 보충해 음주 후 컨디션 회복을 돕습니다.',
+            tags: ['전해질 보충', '속 편한 회복']
+          },
+          {
+            img: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=600&auto=format&fit=crop&q=80',
+            title: '북어 계란죽',
+            desc: '속 부담을 낮추고 아미노산으로 편안한 회복을 돕습니다.',
+            tags: ['속 부담 완화', '저자극']
+          }
+        ],
+        move: ['REST', '휴식 우선', '몸이 회복에 에너지를 쓰도록 고강도 운동은 오늘 쉬어갑니다.'],
+        avoid: ['매운 국물의 자극적 식사', '고카페인 음료', '사우나 땀 빼기', '심야 야식'],
+        coach: '오늘은 성과를 내는 날이 아니라, 몸이 조용히 스스로 회복하도록 돕는 날입니다.'
+      },
+      period: {
+        type: '생리 중 온열 회복일',
+        badges: ['CYCLE', 'WARM', 'REST'],
+        prior: [
+          ['복부 온열 및 따뜻한 영양', '몸이 차가워지지 않도록 따뜻한 음식과 온열 케어를 챙깁니다.'],
+          ['골반 긴장 완화 루틴', '하복부 순환과 통증 완화를 위해 가볍게 스트레칭합니다.'],
+          ['충분한 휴식 시간 확보', '호르몬 변화에 따른 피로감을 들여다보고 편안히 휴식합니다.']
+        ],
+        foods: [
+          {
+            img: 'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?w=600&auto=format&fit=crop&q=80',
+            title: '소고기 미역국',
+            desc: '철분과 무기질을 보충하여 생리 중 수분과 영양 밸런스를 돕습니다.',
+            tags: ['철분 보충', '온열 케어']
+          },
+          {
+            img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=600&auto=format&fit=crop&q=80',
+            title: '단호박 계란찜',
+            desc: '따뜻하고 부드러운 단백질로 생리 중 부담을 줄입니다.',
+            tags: ['식욕 안정', '단백질']
+          }
+        ],
+        move: ['LOW', '골반 이완 스트레칭', '복압을 높이는 운동 대신 골반 긴장을 풀어주는 스트레칭이 적합합니다.'],
+        avoid: ['차가운 음료', '고강도 하체 웨이트', '액상과당 과다', '복부 압박 의류'],
+        coach: '오늘의 몸은 소중한 리듬을 지나고 있습니다. 스스로를 가장 따뜻하게 응원해 주세요.'
+      },
+      sleep: {
+        type: '수면 부족 회복일',
+        badges: ['SLEEP', 'LOW MOVE', 'STABLE'],
+        prior: [
+          ['단백질 섭취로 식욕 안정', '수면 부족으로 흔들리기 쉬운 식욕 리듬을 단백질로 안정시킵니다.'],
+          ['당류 섭취 줄이기', '급격한 피로와 당 갈망을 부르는 단 음식을 부드럽게 줄입니다.'],
+          ['운동 강도 가볍게 조율', '몸의 긴장이 높은 날이므로 고강도 운동은 피하고 휴식합니다.']
+        ],
+        foods: [
+          {
+            img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=600&auto=format&fit=crop&q=80',
+            title: '계란 바나나볼',
+            desc: '가벼운 에너지 보충으로 수면 부족 후 식욕 흔들림을 줄입니다.',
+            tags: ['식욕 안정', '피로 완화']
+          },
+          {
+            img: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=600&auto=format&fit=crop&q=80',
+            title: '고구마 요거트볼',
+            desc: '복합 탄수화물과 단백질로 당 갈망과 에너지 기복을 다독입니다.',
+            tags: ['복합탄수', '포만감']
+          }
+        ],
+        move: ['LOW', '저강도 릴랙싱', '오늘은 근육을 자극하기보다 몸의 긴장을 낮추는 움직임이 좋습니다.'],
+        avoid: ['단 음식 및 액상과당', '고농도 카페인 연속 섭취', '늦은 시간 운동', '스마트폰 장시간 노출'],
+        coach: '수면이 부족할 때 생기는 식욕은 의지 문제가 아닌 몸의 자연스러운 신호입니다.'
+      },
+      complex: {
+        type: '복합 회복일',
+        badges: ['RECOVERY', 'REST', 'BALANCE'],
+        prior: [
+          ['충분한 수분 보충', '가장 먼저 탈수감을 풀고 체액 순환을 부드럽게 돕습니다.'],
+          ['위장 부담 줄이기', '지친 위장을 위해 자극적인 음식을 피하고 편안하게 먹습니다.'],
+          ['신경계 휴식 및 숙면', '운동 강박을 내려놓고 충분한 수면으로 몸 전체를 회복시킵니다.']
+        ],
+        foods: [
+          {
+            img: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=600&auto=format&fit=crop&q=80',
+            title: '순두부 회복볼',
+            desc: '부드러운 단백질로 속 부담을 줄이고 붓기 회복을 돕습니다.',
+            tags: ['저자극', '속 부담 완화']
+          },
+          {
+            img: 'https://images.unsplash.com/photo-1505576399279-565b52d4ac71?w=600&auto=format&fit=crop&q=80',
+            title: '계란 채소 미음',
+            desc: '소화 부담이 겹친 날, 위장을 가볍고 편안하게 다스립니다.',
+            tags: ['가벼운 회복', '위장 보호']
+          }
+        ],
+        move: ['REST', '완전 회복 모드', '오늘은 운동으로 갚는 날이 아니라 몸을 조용히 회복시키는 날입니다.'],
+        avoid: ['무작정 굶기', '자극적인 해장 국물', '보상 심리 고강도 운동', '고카페인 음료'],
+        coach: '복합 회복일에는 많은 일을 하기보다, 몸을 조용히 다독이는 절제가 필요합니다.'
+      }
+    };
+
+    function choosePreset(d) {
+      const g = d.goals;
+      const over = ['heavy', 'binge'].includes(d.overeating) || d.lateSnack === 'greasy';
+      const alc = d.alcohol !== 'none';
+      const sleepy = ['under4', '5-6'].includes(d.sleep) || d.ySleep === 'heavy';
+      const period = d.onPeriod === 'yes' || g.includes('period') || g.includes('pms');
+      const fatigue = ['high', 'extreme'].includes(d.fatigue) || d.condition === 'exhausted';
+      const bloat = d.bloating !== 'none' || d.digestion === 'bloat';
+
+      if ((over || g.includes('overeat')) && (alc || g.includes('alcohol')) && sleepy) return 'complex';
+      if (alc || g.includes('alcohol')) return 'alcohol';
+      if ((over || g.includes('overeat')) && (bloat || d.bloating !== 'none')) return 'overeat';
+      if (period && (fatigue || g.includes('period') || g.includes('pms'))) return 'period';
+      if (sleepy || g.includes('sleep')) return 'sleep';
+      if (g.includes('diet') || g.includes('food') || g.includes('movement')) return 'diet';
+      return 'diet';
+    }
+
+
+
+    async function createReport() {
+      const p = store().profile;
+      if (!p) { show('profile'); return }
+      const d = {
+        date: new Date().toISOString(),
+        goals: checkedAll('goals'),
+        periodSymptoms: checkedAll('periodSymptoms'),
+        sleep: checked('sleep'),
+        sleepQuality: checkedAll('sleepQuality'),
+        wake: checkedAll('wake'),
+        onPeriod: checked('onPeriod'),
+        condition: checked('condition'),
+        fatigue: checked('fatigue'),
+        bloating: checked('bloating'),
+        digestion: checked('digestion'),
+        appetite: checked('appetite'),
+        overeating: checked('overeating'),
+        alcohol: checked('alcohol'),
+        lateSnack: checked('lateSnack'),
+        ySleep: checked('ySleep'),
+        workoutAvailable: checked('workoutAvailable')
+      };
+      if (!d.goals.length) { alert('오늘의 케어 목적을 한 가지 이상 선택해 주세요.'); return }
+
+      const key = choosePreset(d);
+      const pre = presets[key];
+      const score = sleepScore(d.sleep, d.sleepQuality, d.wake);
+      const b = bmi(p.height, p.weight);
+      const np = nextPeriod(p);
+      const goalLabels = d.goals.map(v => goalOptions.find(x => x[0] === v)?.[1] || v);
+
+      const record = { ...d, key, resultType: pre.type, sleepScore: score, coach: pre.coach, goalsLabel: goalLabels };
+      const s = store();
+      s.lastReport = { profile: p, data: d, key, record };
+      s.checkins.unshift(record);
+      s.checkins = s.checkins.slice(0, 60);
+      saveStore(s);
+      renderReport();
+      show('report');
+
+      const user_uuid = getUserUuid();
+      const token = await getAuthToken();
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
+      fetch('/.netlify/functions/save_checkin', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ user_uuid, todayCheckin: d })
+      }).catch(err => {
+        console.warn('Supabase checkin sync failed (offline fallback active):', err);
+      });
+
+      fetch('/.netlify/functions/get_recovery_report', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          profile: p,
+          todayCheckin: d,
+          historySummary: s.checkins.slice(1, 8),
+          currentPreset: pre,
+          recentMealTitles: s.recentMealTitles || [],
+          calculatedCycleDay: calculatePeriodPhase(p).cycleDay,
+          calculatedPeriodPhase: calculatePeriodPhase(p).phase,
+          daysUntilNextPeriod: calculatePeriodPhase(p).d
+        })
+      })
+        .then(res => {
+          if (!res.ok) throw new Error('API failed');
+          return res.json();
+        })
+        .then(resData => {
+          console.log('[Today Recovery AI] aiReport mealRecommendations:', resData?.aiReport?.mealRecommendations?.length || 0);
+          if (resData && resData.aiReport) {
+            const storeS = store();
+            if (storeS.lastReport && storeS.lastReport.record) {
+              storeS.lastReport.record.aiReport = resData.aiReport;
+              if (storeS.checkins.length > 0) {
+                storeS.checkins[0].aiReport = resData.aiReport;
+              }
+              
+              // 최근 식단 제목 업데이트
+              if (resData.aiReport.mealRecommendations && Array.isArray(resData.aiReport.mealRecommendations)) {
+                if (!storeS.recentMealTitles) storeS.recentMealTitles = [];
+                const newTitles = resData.aiReport.mealRecommendations.map(m => m.title);
+                storeS.recentMealTitles = [...newTitles, ...storeS.recentMealTitles].slice(0, 10);
+              }
+              
+              saveStore(storeS);
+              renderReport();
+            }
+          }
+        })
+        .catch(err => {
+          console.warn('AI report fetch failed, using local fallback:', err);
+        });
+    }
+
+    function renderReport() {
+      console.log('[Today Recovery AI] renderReport start');
+      const s = store();
+      console.log('[Today Recovery AI] report exists:', !!s.lastReport);
+
+      if (!s.lastReport) {
+        $('reportContent').innerHTML = `
+          <div class="empty card" style="text-align:center; padding: 40px 20px;">
+            <h3 style="margin-bottom:10px; color:var(--gold1);">아직 생성된 회복 리포트가 없어요.</h3>
+            <p class="muted" style="margin-bottom:20px;">오늘 체크인을 완료하면 AI 회복 리포트를 확인할 수 있어요.</p>
+            <button class="btn btn-primary" style="max-width:200px; margin:0 auto;" onclick="show('checkin')">오늘 체크인 하러가기</button>
+          </div>
+        `;
+        return;
+      }
+
+      try {
+        const { profile: p, data: d, key, record } = s.lastReport;
+        const pre = presets[key] || presets['diet'];
+        let aiReport = record?.aiReport || null;
+        if (aiReport && !aiReport.coachMessage && aiReport.coach_message) {
+          // Map new JSON schema to old format temporarily until Phase 5 UI update
+          aiReport = {
+            coachMessage: aiReport.coach_message,
+            priorityUpdates: (aiReport.priorities || []).map((p, idx) => ({ index: idx, title: p, desc: '' })),
+            foodTips: aiReport.daily_routine || [],
+            mealRecommendations: (aiReport.meal?.examples || []).map(m => ({ title: m, desc: aiReport.meal?.direction || '', tag: '추천식' })),
+            moveTip: aiReport.exercise ? `[${aiReport.exercise.intensity}] ${aiReport.exercise.example}` : '',
+            avoidTips: aiReport.dont_do_today || []
+          };
+        }
+        const score = sleepScore(d.sleep, d.sleepQuality, d.wake);
+        const b = bmi(p.height, p.weight);
+        const phaseInfo = calculatePeriodPhase(p);
+        if (d.onPeriod === 'yes' && phaseInfo.phase === '미등록') {
+          phaseInfo.phase = '월경기';
+        }
+        const hasBodyData = p.height && p.weight;
+        const bmipos = hasBodyData ? Math.max(4, Math.min(96, (+b / 32) * 100)) : 0;
+
+        $('reportContent').innerHTML = `
+        <div class="report-screen-content">
+          <div class="report-hero">
+            <span class="report-hero-date">\${new Date().toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'long' })}</span>
+            <div class="report-hero-title">오늘 내 몸의 리듬을<br>다독이는 회복 리포트</div>
+            <div class="report-hero-metrics">
+              <div class="report-hero-pill">🌙 수면 \${score}점</div>
+              <div class="report-hero-pill">✨ \${d.onPeriod === 'yes' ? '생리 중' : phaseInfo.phase}</div>
+              <div class="report-hero-pill">✦ \${pre.type}</div>
+            </div>
+          </div>
+
+          <div class="report-card">
+            <div class="report-card-title">오늘의 우선순위</div>
+            <div class="priority">
+              \${pre.prior.map((x, i) => {
+              const aiPrior = (aiReport && aiReport.priorityUpdates && aiReport.priorityUpdates.find(u => u.index === i));
+              const title = aiPrior ? aiPrior.title : x[0];
+              const desc = aiPrior ? aiPrior.desc : x[1];
+              return \`
+                  <div class="priority-item">
+                    <span class="num">0\${i + 1}</span>
+                    <div>
+                      <b class="priority-head">\${title}</b>
+                      <p class="muted priority-body">\${desc}</p>
+                    </div>
+                  </div>
+                \`;
+            }).join('')}
+            </div>
+          </div>
+
+          <div class="report-card">
+            <div class="report-card-title">신체 리듬 요약</div>
+            <div class="metric-row">
+              <div class="metric"><small>신장</small><b>\${p.height ? p.height + ' cm' : '미입력'}</b></div>
+              <div class="metric"><small>체중</small><b>\${p.weight ? p.weight + ' kg' : '미입력'}</b></div>
+              <div class="metric"><small>BMI 지수</small><b>\${hasBodyData ? b + ' <span class="bmi-tag">' + bmiStatus(b) + '</span>' : '미입력'}</b></div>
+            </div>
+            <div class="progress-bar-wrap">
+              \${hasBodyData ? \`<div class="progress gold-progress"><i style="width:\${bmipos}%"></i></div>\` : ''}
+            </div>
+            <p class="medical">체중 감량 압박이 아니라, 오늘 운동 강도와 식사량 조정을 위한 참고값입니다.</p>
+          </div>
+
+          <div class="report-card">
+            <div class="report-card-title">수면 리듬</div>
+            <div class="sleep-layout-top">
+              <div class="sleep-score-ring" style="margin:0;">
+                <div class="sleep-gauge-wrap">
+                  <svg class="sleep-gauge" viewBox="0 0 100 100">
+                    <circle class="gauge-bg" cx="50" cy="50" r="42" fill="none" stroke="rgba(216, 180, 106, 0.08)" stroke-width="6"></circle>
+                    <circle class="gauge-fill" cx="50" cy="50" r="42" fill="none" stroke="url(#goldGrad)" stroke-width="6" 
+                            stroke-dasharray="263.89" stroke-dashoffset="\${263.89 - (263.89 * score) / 100}" stroke-linecap="round"></circle>
+                  </svg>
+                  <div class="gauge-text">
+                    <span class="score">\${score}</span>
+                    <span class="label">점수</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sleep-layout-mid">
+              <div class="sleep-mini-card">
+                <div class="sleep-mini-card-title">수면 시간</div>
+                <div class="sleep-mini-card-val">\${label('sleep', d.sleep) || '기록 없음'}</div>
+              </div>
+              <div class="sleep-mini-card">
+                <div class="sleep-mini-card-title">기상 체감</div>
+                <div class="period-chip-wrap" style="justify-content:center;">
+                  \${(Array.isArray(d.wake) ? d.wake : (d.wake ? [d.wake] : [])).map(v => \`<span class="period-chip">\${label('wake', v) || '기록 없음'}</span>\`).join('') || '<span class="period-chip">기록 없음</span>'}
+                </div>
+              </div>
+            </div>
+            <div class="sleep-mini-card" style="margin-bottom:16px;">
+              <div class="sleep-mini-card-title">수면의 질</div>
+              <div class="period-chip-wrap" style="justify-content:center;">
+                \${(Array.isArray(d.sleepQuality) ? d.sleepQuality : (d.sleepQuality ? [d.sleepQuality] : [])).map(v => \`<span class="period-chip">\${label('sleepQuality', v) || '기록 없음'}</span>\`).join('') || '<span class="period-chip">기록 없음</span>'}
+              </div>
+            </div>
+            <p class="muted" style="font-size:12.5px; text-align:center;">\${score >= 80 ? '수면 리듬이 안정적이므로 오늘 운동을 원활히 진행할 수 있습니다.' : score >= 55 ? '수면 효율이 다소 저하되었으므로 운동 강도를 가볍게 조절하는 것을 추천합니다.' : '피로가 누적되었으므로 무리한 운동보다 수면과 휴식을 우선해 주세요.'}</p>
+          </div>
+
+          <div class="report-card">
+            <div class="report-card-title">생리 리듬</div>
+            
+            <div class="period-visual-row">
+              <div class="period-phase-ring-container \${d.onPeriod === 'yes' ? 'active' : ''}">
+                <div class="period-phase-label">\${d.onPeriod === 'yes' ? '생리 중' : phaseInfo.phase}</div>
+              </div>
+              <div class="period-summary-text">
+                \${generatePeriodSummary(d, phaseInfo)}
+              </div>
+            </div>
+            
+            <div class="period-stats-grid">
+              <div class="period-stat">
+                <span class="period-stat-label">생리 상태</span>
+                <span class="period-stat-value">\${d.onPeriod === 'yes' ? '생리 중' : '생리 아님'}</span>
+              </div>
+              <div class="period-stat">
+                <span class="period-stat-label">현재 리듬</span>
+                <span class="period-stat-value">\${phaseInfo.phase}</span>
+              </div>
+              <div class="period-stat">
+                <span class="period-stat-label">주기 일차</span>
+                <span class="period-stat-value">\${phaseInfo.cycleDay !== null ? phaseInfo.cycleDay + '일차' : '미등록'}</span>
+              </div>
+              <div class="period-stat">
+                <span class="period-stat-label">다음 예정일</span>
+                <span class="period-stat-value">\${phaseInfo.d !== null ? 'D-' + phaseInfo.d : '미등록'}</span>
+              </div>
+            </div>
+            
+            <div class="period-stat" style="margin-bottom:0;">
+              <span class="period-stat-label" style="margin-bottom:8px;">주요 신호</span>
+              <div class="period-chip-wrap">
+                \${(Array.isArray(d.periodSymptoms) ? d.periodSymptoms : (d.periodSymptoms ? [d.periodSymptoms] : [])).map(v => \`<span class="period-chip">\${label('periodSymptoms', v) || '기록 없음'}</span>\`).join('') || '<span class="period-chip">기록 없음</span>'}
+              </div>
+            </div>
+
+            \${phaseInfo.phase === '미등록' ? '<button class="period-cta-button" onclick="show(\\'profile\\')">리듬 기준 등록하기</button>' : ''}
+          </div>
+
+          <div class="report-card">
+            <div class="report-card-title">오늘 식단</div>
+            <p class="muted" style="margin-bottom:14px">오늘 컨디션에 맞는 회복식 추천입니다.</p>
+            <div class="food-grid recovery-meal-grid">
+              \${(Array.isArray(aiReport?.mealRecommendations) && aiReport.mealRecommendations.length > 0 ? (() => {
+                const mealsToRender = aiReport.mealRecommendations;
+                return mealsToRender.map((m, i) => \`
+                <div class="food-card recovery-meal-card">
+                  <div class="meal-index">0\${i + 1}</div>
+                  <div class="food-info">
+                    <span class="premium-food-label">RECOVERY MEAL</span>
+                    <div class="food-title">\${m.title}</div>
+                    <div class="food-desc">\${m.desc}</div>
+                    <div class="tags"><span class="tag">\${m.tag}</span></div>
+                  </div>
+                </div>\`);
+              })() : (() => {
+                const fallbackMeals = pre.foods;
+                return fallbackMeals.map((f, i) => \`
+                <div class="food-card recovery-meal-card">
+                  <div class="meal-index">0\${i + 1}</div>
+                  <div class="food-info">
+                    <span class="premium-food-label">RECOVERY MEAL</span>
+                    <div class="food-title">\${f.title}</div>
+                    <div class="food-desc">\${f.desc}</div>
+                    <div class="tags">\${f.tags.slice(0, 2).map(t => \`<span class="tag">\${t}</span>\`).join('')}</div>
+                  </div>
+                </div>\`);
+              })()).join('')}
+            </div>
+          </div>
+
+          <div class="report-card">
+            <div class="report-card-title">오늘 운동</div>
+            <div class="move-box">
+              <div class="move-icon">\${pre.move[0] === 'REST' ? '🛌' : pre.move[0] === 'LOW' ? '🧘' : '⚡'}</div>
+              <div>
+                <span class="intensity \${pre.move[0] === 'REST' ? 'rest' : pre.move[0] === 'NORMAL' ? 'medium' : ''}">\${pre.move[0] === 'REST' ? 'REST' : pre.move[0] === 'LOW' ? 'GENTLE' : 'ACTIVE'}</span>
+                <h3 class="move-title">\${pre.move[1]}</h3>
+                <p class="muted" style="font-size:13px">\${aiReport && aiReport.moveTip ? aiReport.moveTip : pre.move[2]}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="report-card">
+            <div class="report-card-title">오늘 루틴</div>
+            <ul class="check-list">
+              <li>미온수를 적절히 나누어 섭취하세요.</li>
+              <li>오후 늦은 시간 고카페인 음료 섭취를 줄이세요.</li>
+              <li>저녁은 위장 부담이 적은 편안한 식사를 선택하세요.</li>
+              <li>취침 전 스마트폰 사용을 줄이고 일찍 휴식을 취하세요.</li>
+            </ul>
+          </div>
+
+          <div class="report-card avoid-card">
+            <div class="report-card-title">오늘은 피하세요</div>
+            <div class="avoid-chips">
+              \${pre.avoid.map(x => \`<span>\${x}</span>\`).join('')}
+              \${aiReport && aiReport.avoidTips ? aiReport.avoidTips.map(x => \`
+                <span class="ai-avoid-chip" style="border:1px dashed var(--gold2); color:var(--gold2); background:rgba(216,180,106,.05)">✦ \${x}</span>
+              \`).join('') : ''}
+            </div>
+          </div>
+
+          <div class="report-card quote" style="text-align:center;">
+            <span class="eyebrow" style="margin-bottom:12px;">COACH MESSAGE</span>
+            <p style="font-size:15px;">“\${aiReport && aiReport.coachMessage ? aiReport.coachMessage : pre.coach}”</p>
+          </div>
+
+          <p class="medical" style="text-align:center;">의료 진단이 아닌 생활 루틴 추천 서비스입니다.</p>
+          
+          <button class="btn btn-primary" style="margin-top:20px; margin-bottom:20px;" onclick="show('checkin')">새로운 체크인 진행하기</button>
+        </div>
+        \`;
+      } catch (error) {
+        console.error('[Today Recovery AI] renderReport error:', error);
+        $('reportContent').innerHTML = \`
+          <div class="empty card" style="text-align:center; padding: 40px 20px;">
+            <h3 style="margin-bottom:10px; color:var(--garnet);">리포트 렌더링 오류</h3>
+            <p class="muted" style="margin-bottom:20px;">일시적인 오류로 화면을 불러오지 못했습니다. 체크인을 다시 진행해주세요.</p>
+            <button class="btn btn-primary" style="max-width:200px; margin:0 auto;" onclick="show('checkin')">새로운 체크인 하러가기</button>
+          </div>
+        \`;
+      }
+    }
+
+    function renderRecords() {
+      const cs = store().checkins;
+      $('recordsContent').innerHTML = cs.length ? `
+    <div class="mini-list">
+      ${cs.map((r, i) => `
+        <div class="record" onclick="openRecordReport(${i})" style="cursor:pointer">
+          <div class="record-top">
+            <span class="record-date">${new Date(r.date).toLocaleDateString('ko-KR')}</span>
+            <span class="badge">${r.resultType}</span>
+          </div>
+          <p class="record-goals">${(r.goalsLabel || []).join(' · ')}</p>
+          <p class="record-coach">${r.coach}</p>
+          <p class="muted" style="font-size:11px; margin-top:8px; display:flex; align-items:center; gap:4px; color:var(--gold2)">
+            <span>✦</span> <span>탭해서 리포트 다시 보기</span>
+          </p>
+        </div>
+      `).join('')}
+    </div>
+  `: '<div class="empty">아직 저장된 체크인 기록이 없습니다.</div>';
+    }
+
+    function openRecordReport(index) {
+      const s = store();
+      const r = s.checkins[index];
+      if (!r) return;
+      let key = r.key;
+      if (!key) {
+        try {
+          key = choosePreset(r);
+        } catch (e) {
+          key = 'diet';
+        }
+      }
+      if (!key) key = 'diet';
+      s.lastReport = {
+        profile: s.profile,
+        data: r,
+        key,
+        record: r
+      };
+      saveStore(s);
+      renderReport();
+      show('report');
+    }
+
+    function renderPeriodReport(days) {
+      const cs = store().checkins.filter(r => (Date.now() - new Date(r.date).getTime()) <= days * 86400000);
+      const target = days === 7 ? 'weeklyContent' : 'monthlyContent';
+      if (!cs.length) {
+        $(target).innerHTML = '<div class="empty">분석할 기록이 아직 부족합니다. 오늘 체크인을 먼저 진행해 주세요.</div>';
+        return;
+      }
+      const avg = Math.round(cs.reduce((a, b) => a + (b.sleepScore || 0), 0) / cs.length);
+      const diet = cs.filter(r => r.goals.includes('diet')).length;
+      const recovery = cs.filter(r => ['overeat', 'alcohol', 'sleep', 'period', 'complex'].some(k => r.resultType.includes(k) || r.goals.includes(k))).length;
+      const fatigue = cs.filter(r => ['high', 'extreme'].includes(r.fatigue)).length;
+      const bloat = cs.filter(r => r.bloating === 'severe').length;
+
+      const bars = cs.slice(0, 7).reverse().map(r => `<span style="height:${Math.max(12, r.sleepScore || 50)}%"></span>`).join('');
+
+      $(target).innerHTML = `
+    <div class="section-intro">
+      <h2>최근 ${days}일 회복 리듬</h2>
+      <p class="muted">누적된 체크인 데이터를 바탕으로 한 패턴 요약입니다.</p>
+    </div>
+    <div class="card">
+      <div class="metric-row">
+        <div class="metric"><small>체크인</small><b>${cs.length} 회</b></div>
+        <div class="metric"><small>평균 수면</small><b>${avg} 점</b></div>
+        <div class="metric"><small>유지 달성</small><b>${diet} 일</b></div>
+      </div>
+      <div class="chart">${bars}</div>
+    </div>
+    <div class="card">
+      <div class="card-title">주요 패턴 요약</div>
+      <ul class="check-list">
+        <li>집중 회복 케어가 진행된 날: ${recovery}일</li>
+        <li>피로 지수가 높아 주의했던 날: ${fatigue}일</li>
+        <li>체액 붓기가 심했던 날: ${bloat}일</li>
+      </ul>
+      <div class="insight">
+        <b>${days === 7 ? '이번 주' : '이번 달'} 회복 코치의 제안</b>
+        <p class="muted" style="margin-top:6px">${avg < 60 ? '수면과 휴식이 우선 필요한 시기입니다. 무리한 활동보다 편안하게 휴식을 챙겨보세요.' : '전반적인 회복 리듬이 안정적으로 유지되고 있습니다. 이 흐름을 편안하게 이어가세요.'}</p>
+      </div>
+    </div>
+  `;
+    }
+
+    init();
+    initAuthAndStart();
+  </script>
+  <!-- APP_VERSION: stability-hotfix-v20260708-2100 -->
+</body>
+
+</html>
